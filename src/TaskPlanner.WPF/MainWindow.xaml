@@ -36,6 +36,7 @@
                         FontSize="24"
                         VerticalAlignment="Center"
                         Symbol="AppsList20"/>
+                    
                     <TextBlock
                         Text="Lists"
                         Margin="5 0"
@@ -43,12 +44,25 @@
                         FontSize="24"
                         FontWeight="SemiBold"/>
                 </StackPanel>
-                <ComboBox
+                <Grid
                     Margin="0 10">
-                    <ComboBoxItem>Test</ComboBoxItem>
-                    <ComboBoxItem>Test</ComboBoxItem>
-                    <ComboBoxItem>Test</ComboBoxItem>
-                </ComboBox>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <ComboBox
+                        Grid.Column="0"
+                        ItemsSource="{Binding TaskLists}"
+                        SelectedItem="{Binding SelectedTask}"
+                        DisplayMemberPath="Title"/>
+                    <ui:Button
+                        Grid.Column="1"
+                        Appearance="Success"
+                        Foreground="White"
+                        Margin="5 0 0 0"
+                        Icon="{ui:SymbolIcon Add28}"/>
+                </Grid>
+                
             </StackPanel>
             
             <Grid
@@ -62,31 +76,28 @@
                     Text="Tasks"
                     FontSize="16"
                     FontWeight="SemiBold"/>
+                
                 <ui:Card
                     Grid.Row="1"
                     Margin="0 10">
                     <ScrollViewer>
-                        <ItemsControl>
+                        <ItemsControl
+                            ItemsSource="{Binding SelectedTask.Tasks}">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
                                     <ui:Card
                                         Margin="0 5">
-                                        <CheckBox Content="Test"/>
+                                        <CheckBox 
+                                            Content="{Binding Title}"/>
                                     </ui:Card>
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
-                            <ListItem/>
-                            <ListItem/>
-                            <ListItem/>
-                            <ListItem/>
-                            <ListItem/>
-                            <ListItem/>
                         </ItemsControl>
                     </ScrollViewer>
                 </ui:Card>
+                
             </Grid>
             
-
             
             <Grid
                 Grid.Row="2">
