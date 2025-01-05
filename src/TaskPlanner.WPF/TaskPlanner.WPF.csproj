@@ -14,4 +14,10 @@
     <PackageReference Include="WPF-UI" Version="3.0.5" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Data\Tasks.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

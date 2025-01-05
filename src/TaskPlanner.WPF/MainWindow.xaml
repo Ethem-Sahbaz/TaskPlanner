@@ -45,7 +45,7 @@
                     Margin="0 10">
                     <ScrollViewer>
                         <ItemsControl
-                            ItemsSource="{Binding SelectedTask.Tasks}">
+                            ItemsSource="{Binding Tasks}">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
                                     <ui:Card

@@ -1,39 +1,59 @@
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+using System.ComponentModel;
+using System.Diagnostics;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using TaskPlanner.WPF.Services;
 using TaskPlanner.WPF.Tasks;
 
 namespace TaskPlanner.WPF;
 
 public partial class MainViewModel : ObservableObject
 {
-    [ObservableProperty] private ObservableCollection<TaskListItemViewModel> _taskLists = new();
+    private readonly TaskJsonManager _jsonManager;
     
     [ObservableProperty]
-    private TaskListItemViewModel? _selectedTask;
+    private ObservableCollection<TaskItemViewModel> _tasks = new();
     
-    public MainViewModel()
+    public MainViewModel(TaskJsonManager jsonManager)
     {
+        _jsonManager = jsonManager;
+
         InitializeViewModel();
+        Tasks.CollectionChanged += OnTasksCollectionChanged;
     }
 
     private void InitializeViewModel()
     {
+       var tasks = _jsonManager.ReadTasksFromJson();
 
-        // Dummy data
-        for (int j = 0; j < 4; j++)
+        foreach (var task in tasks) 
         {
-            var taskList = new TaskListItemViewModel(){ Title = $"Task List {j}" };
-
-            for (int i = 0; i < 6; i++)
-            {
-                var task = new TaskItemViewModel(){ Title = "Task " + i };
-                taskList.Tasks.Add(task);
-            }
-            
-            TaskLists.Add(taskList);
+            task.PropertyChanged += OnTaskCheckedChanged;
+            Tasks.Add(task);
         }
 
+    }
+
+    /// <summary>
+    /// Saves the lists everytime the collection changes.
+    /// </summary>
+    private void OnTasksCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+    {
+        _jsonManager.WriteTasksToJson(Tasks.ToList());
+    }
+
+    private void OnTaskCheckedChanged(object? sender, PropertyChangedEventArgs e)
+    {
+        
+        if (sender is TaskItemViewModel task &&
+            e.PropertyName == nameof(task.IsChecked))
+        {
+            
+        }
+        var test = nameof(task.IsChecked);
+        
     }
 
 }
