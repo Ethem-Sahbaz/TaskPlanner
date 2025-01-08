@@ -1,6 +1,7 @@
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -15,6 +16,17 @@ public partial class MainViewModel : ObservableObject
     
     [ObservableProperty]
     private ObservableCollection<TaskItemViewModel> _tasks = new();
+
+    [ObservableProperty]
+    private string? _newTaskName;
+
+    [ObservableProperty]
+    private DateTime _selectedDate= DateTime.Now;
+
+    [ObservableProperty]
+    private bool _showTaskNameRequiredErrorMessage;
+
+    public bool ShowRelaxImage => Tasks.Count == 0;
     
     public MainViewModel(TaskJsonManager jsonManager)
     {
@@ -22,6 +34,26 @@ public partial class MainViewModel : ObservableObject
 
         InitializeViewModel();
         Tasks.CollectionChanged += OnTasksCollectionChanged;
+    }
+
+    [RelayCommand]
+    public void CreateTask()
+    {
+        if (string.IsNullOrEmpty(NewTaskName))
+        {
+            ShowTaskNameRequiredErrorMessage = true;
+
+            return;
+        }
+
+        var newTask = new TaskItemViewModel(NewTaskName, SelectedDate);
+
+        newTask.PropertyChanged += OnTaskCheckedChanged;
+
+        Tasks.Add(newTask);
+
+        NewTaskName = string.Empty;
+        ShowTaskNameRequiredErrorMessage = false;
     }
 
     private void InitializeViewModel()
@@ -42,17 +74,18 @@ public partial class MainViewModel : ObservableObject
     private void OnTasksCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
     {
         _jsonManager.WriteTasksToJson(Tasks.ToList());
+        OnPropertyChanged(nameof(ShowRelaxImage));
     }
 
     private void OnTaskCheckedChanged(object? sender, PropertyChangedEventArgs e)
     {
-        
         if (sender is TaskItemViewModel task &&
             e.PropertyName == nameof(task.IsChecked))
         {
-            
+            task.PropertyChanged -= OnTaskCheckedChanged;
+
+            Tasks.Remove(task);
         }
-        var test = nameof(task.IsChecked);
         
     }
 

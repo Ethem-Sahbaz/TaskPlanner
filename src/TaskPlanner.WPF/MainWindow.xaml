@@ -8,63 +8,122 @@
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance local:MainViewModel}"
         Height="600" Width="500">
-    <Grid
-        Margin="10">
+    <ui:FluentWindow.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+    </ui:FluentWindow.Resources>
+    <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
+        
+        <!--Title bar-->
+        
         <ui:TitleBar
             Grid.Row="0"
+            FontSize="18"
             Title="TaskPlanner"
-            FontSize="14"
+            Icon="{ui:SymbolIcon Symbol=ClipboardTask24}"
             FontWeight="SemiBold"/>
+
+
+        <!--Task Overview -->
         
-        <!-- UserTask Overview -->
         <Grid
-            Grid.Row="1">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
-            
+            Grid.Row="1"
+            Margin="10">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <ui:Card
+                Grid.Row="0"
+                Margin="0 10"
+                VerticalAlignment="Stretch">
+                <ScrollViewer>
+                    <ItemsControl
+                        ItemsSource="{Binding Tasks}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <ui:Card
+                                    Margin="0 5">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <CheckBox
+                                            Grid.Column="0"
+                                            IsChecked="{Binding IsChecked}"/>
+                                        <Grid
+                                            Grid.Column="1"
+                                            Margin="10 0 0 0"
+                                            HorizontalAlignment="Left">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition/>
+                                                <RowDefinition/>
+                                            </Grid.RowDefinitions>
+
+                                            <TextBlock
+                                                Grid.Row="0"
+                                                FontSize="16"
+                                                FontWeight="SemiBold"
+                                                Text="{Binding Title}"/>
+
+                                            <TextBlock 
+                                                Grid.Row="1"
+                                                Text="{Binding FormattedDate}">
+                                                <TextBlock.Style>
+                                                    <Style TargetType="TextBlock">
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding IsDue}" Value="True">
+                                                                <Setter Property="Foreground" Value="Red"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </TextBlock.Style>
+                                            </TextBlock>
+
+                                        </Grid>
+                                    </Grid>
+                                </ui:Card>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+            </ui:Card>
+
             <Grid
-                Grid.Row="0">
+                Grid.Row="0"
+                Margin="0 15"
+                Opacity="0.2"
+                Visibility="{Binding ShowRelaxImage, Converter={StaticResource BooleanToVisibilityConverter}}">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
-                <TextBlock
+                <Image
                     Grid.Row="0"
-                    Text="Tasks"
-                    FontSize="16"
-                    FontWeight="SemiBold"/>
-                
-                <ui:Card
+                    Source="pack://application:,,,/Images/ChillFox.png"/>
+                <TextBlock
                     Grid.Row="1"
-                    Margin="0 10">
-                    <ScrollViewer>
-                        <ItemsControl
-                            ItemsSource="{Binding Tasks}">
-                            <ItemsControl.ItemTemplate>
-                                <DataTemplate>
-                                    <ui:Card
-                                        Margin="0 5">
-                                        <CheckBox 
-                                            Content="{Binding Title}"/>
-                                    </ui:Card>
-                                </DataTemplate>
-                            </ItemsControl.ItemTemplate>
-                        </ItemsControl>
-                    </ScrollViewer>
-                </ui:Card>
-                
+                    HorizontalAlignment="Center"
+                    TextWrapping="Wrap"
+                    FontWeight="SemiBold"
+                    FontSize="24"
+                    Foreground="DeepSkyBlue"
+                    Text="Everything done. Time to relax."/>
+
             </Grid>
-            
+
+            <!-- Create new Task-->
             
             <Grid
-                Grid.Row="2">
+                Grid.Row="1">
                 <Grid.RowDefinitions>
+                    <RowDefinition/>
                     <RowDefinition/>
                     <RowDefinition/>
                 </Grid.RowDefinitions>
@@ -77,20 +136,30 @@
                     </Grid.ColumnDefinitions>
                     <ui:TextBox
                         Grid.Column="0"
-                        PlaceholderText="Enter Task Title"/>
-                    <StackPanel
+                        Text="{Binding NewTaskName}"
+                        PlaceholderText="Enter a title for the task"/>
+
+                    <DatePicker
                         Grid.Column="1"
-                        Orientation="Horizontal">
-                        <ComboBox
-                            Margin="10 0"/>
-                        <DatePicker
-                            VerticalAlignment="Stretch"/>
-                    </StackPanel>
-                    
+                        Margin="10 0 0 0"
+                        DisplayDate="{Binding SelectedDate}"
+                        SelectedDate="{Binding SelectedDate}"
+                        VerticalAlignment="Stretch"/>
+
                 </Grid>
-                <ui:Button
+
+                <TextBlock
                     Grid.Row="1"
+                    Margin="0 5"
+                    Text="Title required"
+                    Foreground="Red"
+                    Visibility="{Binding ShowTaskNameRequiredErrorMessage, Converter= {StaticResource BooleanToVisibilityConverter}}"/>
+
+                <ui:Button
+                    Grid.Row="2"
+                    Margin="0 10 0 0"
                     Content="Add new Task"
+                    Command="{Binding CreateTaskCommand}"
                     HorizontalAlignment="Stretch"
                     Appearance="Primary"/>
             </Grid>

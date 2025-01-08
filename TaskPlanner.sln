@@ -1,11 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# 
+# Visual Studio Version 17
+VisualStudioVersion = 17.12.35514.174 d17.12
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{F9B2EB5C-7855-4F40-9A9E-29EA428B77F6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskPlanner.WPF", "src\TaskPlanner.WPF\TaskPlanner.WPF.csproj", "{9CF815C6-9A3E-497D-BB84-82CEEA73125C}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskPlanner.Application", "src\TaskPlanner.Application\TaskPlanner.Application.csproj", "{14FCD888-4227-436D-AFC5-DAB978BE964A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,13 +17,11 @@ Global
 		{9CF815C6-9A3E-497D-BB84-82CEEA73125C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9CF815C6-9A3E-497D-BB84-82CEEA73125C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9CF815C6-9A3E-497D-BB84-82CEEA73125C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{14FCD888-4227-436D-AFC5-DAB978BE964A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{14FCD888-4227-436D-AFC5-DAB978BE964A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{14FCD888-4227-436D-AFC5-DAB978BE964A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{14FCD888-4227-436D-AFC5-DAB978BE964A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{9CF815C6-9A3E-497D-BB84-82CEEA73125C} = {F9B2EB5C-7855-4F40-9A9E-29EA428B77F6}
-		{14FCD888-4227-436D-AFC5-DAB978BE964A} = {F9B2EB5C-7855-4F40-9A9E-29EA428B77F6}
 	EndGlobalSection
 EndGlobal
