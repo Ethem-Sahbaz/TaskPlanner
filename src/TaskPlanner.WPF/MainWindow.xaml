@@ -40,7 +40,8 @@
             <ui:Card
                 Grid.Row="0"
                 Margin="0 10"
-                VerticalAlignment="Stretch">
+                VerticalAlignment="Stretch"
+                VerticalContentAlignment="Top">
                 <ScrollViewer>
                     <ItemsControl
                         ItemsSource="{Binding Tasks}">
